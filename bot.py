@@ -20,7 +20,7 @@ START_BUTTONS=[
 
 DL_BUTTONS=[
     [
-        InlineKeyboardButton('No Watermark', callback_data='nowm'),
+        InlineKeyboardButton('No Watermark', callback_data='downloadUrl'),
         InlineKeyboardButton('Watermark', callback_data='wm'),
     ],
     [InlineKeyboardButton('Audio', callback_data='audio')],
@@ -64,7 +64,7 @@ async def _tiktok(bot, update):
 # Callbacks
 @xbot.on_callback_query()
 async def _callbacks(bot, cb: CallbackQuery):
-  if cb.data == 'nowm':
+  if cb.data == 'downloadUrl':
     dirs = downloads.format(uuid.uuid4().hex)
     os.makedirs(dirs)
     cbb = cb
@@ -78,14 +78,14 @@ async def _callbacks(bot, cb: CallbackQuery):
     else:
       tt = resp.url
     ttid = dirs+tt.split('/')[-1]
-    r = requests.get('https://api.reiyuura.me/api/dl/tiktok?url='+tt)
+    r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['nowm']
+    link = rs['result']['downloadUrl']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
-    open(f'{ttid}.mp4', 'wb').write(r.content)
-    await bot.send_video(update.chat.id, f'{ttid}.mp4',)
+    open(f'{ttid}.jpg', 'wb').write(r.content)
+    await bot.send_image(update.chat.id, f'{ttid}.jpg',)
     shutil.rmtree(dirs)
   elif cb.data == 'wm':
     dirs = downloads.format(uuid.uuid4().hex)
@@ -101,7 +101,7 @@ async def _callbacks(bot, cb: CallbackQuery):
     else:
       tt = resp.url
     ttid = dirs+tt.split('/')[-1]
-    r = requests.get('https://api.reiyuura.me/api/dl/tiktok?url='+tt)
+    r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
     link = rs['result']['wm']
