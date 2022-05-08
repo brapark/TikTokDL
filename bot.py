@@ -73,7 +73,6 @@ async def _callbacks(bot, cb: CallbackQuery):
     url = update.text
     session = requests.Session()
     resp = session.head(url, allow_redirects=True)
-    else:
       tt = resp.url
     ttid = dirs+tt
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
@@ -94,7 +93,6 @@ async def _callbacks(bot, cb: CallbackQuery):
     url = update.text
     session = requests.Session()
     resp = session.head(url, allow_redirects=True)
-    else:
       tt = resp.url
     ttid = dirs+tt
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
