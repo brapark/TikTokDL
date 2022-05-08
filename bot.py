@@ -77,17 +77,17 @@ async def _callbacks(bot, cb: CallbackQuery):
       tt = resp.url.split('?', 1)[0]
     else:
       tt = resp.url
-    ttid = dirs+tt.split('/')[-1]
+    ttid = dirs+tt
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['{downloadUrl}']
+    link = rs['result']['downloadUrl']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
     open(f'{ttid}.mp4', 'wb').write(r.content)
     await bot.send_video(update.chat.id, f'{ttid}.mp4',)
     shutil.rmtree(dirs)
-  elif cb.data == 'wm':
+  elif cb.data == 'downloadUrl':
     dirs = downloads.format(uuid.uuid4().hex)
     os.makedirs(dirs)
     cbb = cb
@@ -100,11 +100,11 @@ async def _callbacks(bot, cb: CallbackQuery):
       tt = resp.url.split('?', 1)[0]
     else:
       tt = resp.url
-    ttid = dirs+tt.split('/')[-1]
+    ttid = dirs+tt
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['{downloadUrl}']
+    link = rs['result']['downloadUrl']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
     open(f'{ttid}.mp4', 'wb').write(r.content)
@@ -123,11 +123,11 @@ async def _callbacks(bot, cb: CallbackQuery):
       tt = resp.url.split('?', 1)[0]
     else:
       tt = resp.url
-    ttid = dirs+tt.split('/')[-1]
+    ttid = dirs+tt
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['{downloadUrl}']
+    link = rs['result']['downloadUrl']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
     open(f'{ttid}.mp4', 'wb').write(r.content)
