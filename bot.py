@@ -81,7 +81,7 @@ async def _callbacks(bot, cb: CallbackQuery):
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['downloadUrl']
+    link = rs['result']['{downloadUrl}']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
     open(f'{ttid}.mp4', 'wb').write(r.content)
@@ -104,7 +104,7 @@ async def _callbacks(bot, cb: CallbackQuery):
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['downloadUrl']
+    link = rs['result']['{downloadUrl}']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
     open(f'{ttid}.mp4', 'wb').write(r.content)
@@ -127,7 +127,7 @@ async def _callbacks(bot, cb: CallbackQuery):
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['downloadUrl']
+    link = rs['result']['{downloadUrl}']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
     open(f'{ttid}.mp4', 'wb').write(r.content)
