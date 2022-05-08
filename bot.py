@@ -73,8 +73,6 @@ async def _callbacks(bot, cb: CallbackQuery):
     url = update.text
     session = requests.Session()
     resp = session.head(url, allow_redirects=True)
-    if '?' in resp.url:
-      tt = resp.url.split('?', 1)[0]
     else:
       tt = resp.url
     ttid = dirs+tt
@@ -96,8 +94,6 @@ async def _callbacks(bot, cb: CallbackQuery):
     url = update.text
     session = requests.Session()
     resp = session.head(url, allow_redirects=True)
-    if '?' in resp.url:
-      tt = resp.url.split('?', 1)[0]
     else:
       tt = resp.url
     ttid = dirs+tt
@@ -119,9 +115,7 @@ async def _callbacks(bot, cb: CallbackQuery):
     url = update.text
     session = requests.Session()
     resp = session.head(url, allow_redirects=True)
-    if '?' in resp.url:
-      tt = resp.url.split('?', 1)[0]
-    else:
+   else:
       tt = resp.url
     ttid = dirs+tt
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
