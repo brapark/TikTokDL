@@ -20,7 +20,7 @@ START_BUTTONS=[
 
 DL_BUTTONS=[
     [
-        InlineKeyboardButton('No Watermark', callback_data='downloadUrl'),
+        InlineKeyboardButton('No Watermark', callback_data='nowm'),
         InlineKeyboardButton('Watermark', callback_data='wm'),
     ],
     [InlineKeyboardButton('Audio', callback_data='audio')],
@@ -53,7 +53,7 @@ async def _start(bot, update):
 
 # Downloader for tiktok
 @xbot.on_message(filters.regex(pattern='.*http.*') & filters.private)
-async def _tiktok(bot, update):
+async def _instagram(bot, update):
   url = update.text
   session = requests.Session()
   resp = session.head(url, allow_redirects=True)
@@ -84,8 +84,8 @@ async def _callbacks(bot, cb: CallbackQuery):
     link = rs['result']['downloadUrl']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
-    open(f'{ttid}.jpg', 'wb').write(r.content)
-    await bot.send_image(update.chat.id, f'{ttid}.jpg',)
+    open(f'{ttid}.mp4', 'wb').write(r.content)
+    await bot.send_video(update.chat.id, f'{ttid}.mp4',)
     shutil.rmtree(dirs)
   elif cb.data == 'wm':
     dirs = downloads.format(uuid.uuid4().hex)
@@ -104,7 +104,7 @@ async def _callbacks(bot, cb: CallbackQuery):
     r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['wm']
+    link = rs['result']['downloadUrl']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
     open(f'{ttid}.mp4', 'wb').write(r.content)
@@ -124,10 +124,10 @@ async def _callbacks(bot, cb: CallbackQuery):
     else:
       tt = resp.url
     ttid = dirs+tt.split('/')[-1]
-    r = requests.get('https://api.reiyuura.me/api/dl/tiktok?url='+tt)
+    r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['wm']
+    link = rs['result']['downloadUrl']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
     open(f'{ttid}.mp4', 'wb').write(r.content)
