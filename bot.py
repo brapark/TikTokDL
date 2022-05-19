@@ -20,11 +20,8 @@ START_BUTTONS=[
 
 DL_BUTTONS=[
     [
-        InlineKeyboardButton('No Watermark', callback_data='nowm'),
-        InlineKeyboardButton('Watermark', callback_data='wm'),
-    ],
-    [InlineKeyboardButton('Audio', callback_data='audio')],
-]
+        InlineKeyboardButton('Obtener', callback_data='url'),
+    ]
 
 
 # Running bot
@@ -64,7 +61,7 @@ async def _instagram(bot, update):
 # Callbacks
 @xbot.on_callback_query()
 async def _callbacks(bot, cb: CallbackQuery):
-  if cb.data == 'downloadUrl':
+  if cb.data == 'url':
     dirs = downloads.format(uuid.uuid4().hex)
     os.makedirs(dirs)
     cbb = cb
@@ -73,59 +70,19 @@ async def _callbacks(bot, cb: CallbackQuery):
     url = update.text
     session = requests.Session()
     resp = session.head(url, allow_redirects=True)
-      tt = resp.url
-    ttid = dirs+tt
-    r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
+    if '?' in resp.url:
+      ig = resp.url.split('?', 1)[0]
+    else:
+      ig = resp.url
+    igid = dirs+ig.split('/')[-1]
+    r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+ig)
     result = r.text
     rs = json.loads(result)
-    link = rs['result']['downloadUrl']
+    link = rs['result']['url']
     resp = session.head(link, allow_redirects=True)
     r = requests.get(resp.url, allow_redirects=True)
-    open(f'{ttid}.mp4', 'wb').write(r.content)
-    await bot.send_video(update.chat.id, f'{ttid}.mp4',)
-    shutil.rmtree(dirs)
-  elif cb.data == 'downloadUrl':
-    dirs = downloads.format(uuid.uuid4().hex)
-    os.makedirs(dirs)
-    cbb = cb
-    update = cbb.message.reply_to_message
-    await cb.message.delete()
-    url = update.text
-    session = requests.Session()
-    resp = session.head(url, allow_redirects=True)
-      tt = resp.url
-    ttid = dirs+tt
-    r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
-    result = r.text
-    rs = json.loads(result)
-    link = rs['result']['downloadUrl']
-    resp = session.head(link, allow_redirects=True)
-    r = requests.get(resp.url, allow_redirects=True)
-    open(f'{ttid}.mp4', 'wb').write(r.content)
-    await bot.send_video(update.chat.id, f'{ttid}.mp4',)
-    shutil.rmtree(dirs)
-  elif cb.data == 'audio':
-    dirs = downloads.format(uuid.uuid4().hex)
-    os.makedirs(dirs)
-    cbb = cb
-    update = cbb.message.reply_to_message
-    await cb.message.delete()
-    url = update.text
-    session = requests.Session()
-    resp = session.head(url, allow_redirects=True)
-   else:
-      tt = resp.url
-    ttid = dirs+tt
-    r = requests.get('https://api.reiyuura.me/api/dl/ig?url='+tt)
-    result = r.text
-    rs = json.loads(result)
-    link = rs['result']['downloadUrl']
-    resp = session.head(link, allow_redirects=True)
-    r = requests.get(resp.url, allow_redirects=True)
-    open(f'{ttid}.mp4', 'wb').write(r.content)
-    cmd = f'ffmpeg -i "{ttid}.mp4" -vn -ar 44100 -ac 2 -ab 192 -f mp3 "{ttid}.mp3"'
-    await run_cmd(cmd)
-    await bot.send_audio(update.chat.id, f'{ttid}.mp3',)
+    open(f'{igid}.jpg', 'image').write(r.content)
+    await bot.send_image(update.chat.id, f'{igid}.jpg',)
     shutil.rmtree(dirs)
 
 xbot.run()
