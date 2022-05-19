@@ -20,9 +20,11 @@ START_BUTTONS=[
 
 DL_BUTTONS=[
     [
-        InlineKeyboardButton('Obtener', callback_data='url'),
-    ]
-
+        InlineKeyboardButton('No Watermark', callback_data='nowm'),
+        InlineKeyboardButton('Watermark', callback_data='wm'),
+    ],
+    [InlineKeyboardButton('Audio', callback_data='audio')],
+]
 
 # Running bot
 xbot = Client('TikTokDL', api_id=APP_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
